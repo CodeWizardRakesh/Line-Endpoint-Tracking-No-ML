@@ -14,11 +14,11 @@ def detect_and_display_endpoints(image_path):
     # Threshold the image to binary
     _, binary_image = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
 
-    # Edge detection
+    # Perform edge detection
     edges = cv2.Canny(binary_image, 50, 150, apertureSize=3)
 
-    # Line detection using Hough Line Transform
-    lines = cv2.HoughLinesP(edges, 1, np.pi / 180, threshold=50, minLineLength=20, maxLineGap=5)
+    # Detect lines using Hough Line Transform
+    lines = cv2.HoughLinesP(edges, 1, np.pi / 180, threshold=50, minLineLength=30, maxLineGap=10)
 
     if lines is None:
         print("No lines detected.")
@@ -34,21 +34,21 @@ def detect_and_display_endpoints(image_path):
         x1, y1, x2, y2 = line[0]
         endpoints.append(((x1, y1), (x2, y2)))
 
-        # Draw the line
+        # Draw the detected line
         cv2.line(output_image, (x1, y1), (x2, y2), (0, 255, 0), 2)  # Green lines
 
         # Mark the endpoints
         cv2.circle(output_image, (x1, y1), 5, (0, 0, 255), -1)  # Red circle at one endpoint
         cv2.circle(output_image, (x2, y2), 5, (255, 0, 0), -1)  # Blue circle at the other endpoint
 
-    # Display the results
+    # Display the image with lines and endpoints marked
     cv2.imshow("Detected Endpoints", output_image)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-    return endpoints
+    # Print detected endpoints
+    print("Detected Endpoints:", endpoints)
 
 # Example usage
 image_path = 'line_img.jpg'  # Replace with the path to your image
-endpoints = detect_and_display_endpoints(image_path)
-print("Endpoints:", endpoints)
+detect_and_display_endpoints(image_path)
