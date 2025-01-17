@@ -15,10 +15,10 @@ def detect_and_display_endpoints(image_path):
     _, binary_image = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
 
     # Perform edge detection
-    edges = cv2.Canny(binary_image, 50, 150, apertureSize=3)
+    edges = cv2.Canny(binary_image, 50, 150, apertureSize=7) #Aperture size is always the odd numbers between 3 and 7
 
     # Detect lines using Hough Line Transform
-    lines = cv2.HoughLinesP(edges, 1, np.pi / 180, threshold=50, minLineLength=30, maxLineGap=10)
+    lines = cv2.HoughLinesP(edges, 1, np.pi / 180, threshold=50, minLineLength=30, maxLineGap=50)
 
     if lines is None:
         print("No lines detected.")
